@@ -20,6 +20,7 @@ int main(int argc, char** args)
         	return 1;
 	}
 
+	// TODO: Implement this logic on a function
 	if(strcmp(args[1], "-c") == 0)
 	{
 		int lastPointerIndex = 0;

@@ -25,6 +25,7 @@ FileStream* read_file(char* file_path)
 
 void divide_fileChunks(int totalFileSize, int chunksAmount, uint8_t* fileBytes, const char* fileExt, char* fileToSolve)
 {
+	int fileBytePointer = 0;
 	for(int i = 0; i < chunksAmount; i ++)
 	{
 		if(fileToSolve == NULL)
@@ -36,17 +37,17 @@ void divide_fileChunks(int totalFileSize, int chunksAmount, uint8_t* fileBytes, 
 		FILE *filePointer = fopen(fileToSolve,"wb");
 
 		if (filePointer == NULL)
-    		{
+    	{
         		fprintf(stderr, "Error: Could not open the file '%s'.\n", fileToSolve);
 	        	exit(1);
 		}
 
-		int bufferSize = i + 1 == chunksAmount ? ceil(totalFileSize / chunksAmount) : totalFileSize / chunksAmount;
+		int bufferSize = i + 1 == chunksAmount ? totalFileSize - fileBytePointer : totalFileSize / chunksAmount;
 		for(int j = 0; j < bufferSize; j++)
 		{
-			int fileBytePointer = (bufferSize * i) + j;
 			uint8_t byteToWrite[] = { fileBytes[fileBytePointer] };
 			fwrite(byteToWrite, 1, 1, filePointer);
+			fileBytePointer++;
 		}
 		fclose(filePointer);
 		fileToSolve = NULL;
